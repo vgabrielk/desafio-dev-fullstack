@@ -25,6 +25,30 @@ Desejável:
 
 
 ## O desafio:
-Utilizando o seu smartphone ou desktop, João deve ser capaz de realizar uma simulação para um plano energético. 
+Utilizando o seu smartphone ou desktop, João deve ser capaz de realizar uma simulação para um plano de compensação energético. 
 ###
-O processo é simples, João submete um formulário contendo o seu nome, email e telefone, junto a uma conta de energia que deve ser decodificada utilizando nossa API interna.
+O processo é simples, João submete um formulário contendo o seu nome, email e telefone, junto a **uma ou mais** contas de energia (que será decodificada por nossa API interna).
+###
+Uma vez submetido o formulário, o backend tem que ser capaz de criar um novo ```lead``` contendo as informações cadastrais do author, juntamente aos dados decodificados da conta de energia.
+
+```ts
+export interface SolicitarSimulacaoDeCompensacaoEnergeticaInput {
+  nomeCompleto: string
+  email: string
+  telefone: string
+  faturasDeEnergia: (Buffer | File)[]
+  informacoesDaFatura: InformacaoDaFatura[]
+}
+
+export interface InformacaoDaFatura {
+    codigoDaUnidadeConsumidora: string
+    modeloFasico: string
+    enquadramento: string
+    mesDeReferencia: Date
+    consumoEmReais: number
+    historicoDeConsumoEmKWH: {
+      consumoFP: number
+      consumoDate: Date
+    }[]
+}
+```
