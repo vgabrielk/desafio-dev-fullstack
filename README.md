@@ -40,7 +40,11 @@ Uma vez submetido o formulário, o backend tem que ser capaz de criar um novo ``
 - [ ] Endpoint para listar todas as simulações (com opção de filtro por nome, email, codigo da unidade consumidora etc)
 - [ ] Endpoint para listar uma simulação baseado no id do lead, etc...
 - [ ] Modelar domínio com os agregados a seguir:
-##### A fim de facilitar, vamos reduzir a complexidade dos agregados apenas pra informações pertinentes
+
+### Diferencial
+- [ ] Fazer validação dos dados transitados na API.
+- [ ] Configurar ambiente docker para rodar a aplicação.
+      
 ```ts
 export abstract class Lead {
   id: string
