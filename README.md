@@ -25,6 +25,9 @@ Desejável:
 
 
 ## O desafio:
+> [!TIP]
+> A escolha de tecnologia é livre. O único requisito é que seja feito em Typescript e que o frontend seja feito em ReactJS ou NextJS. Pode adicionar frameworks ou bibliotecas da sua escolha!
+
 Utilizando o seu smartphone ou desktop, João deve ser capaz de realizar uma simulação para um plano de compensação energética. 
 ###
 O processo é simples, João submete um formulário contendo o seu nome, email e telefone, junto a **uma ou mais** contas de energia (que será decodificada por nossa API interna).
@@ -95,3 +98,10 @@ export interface InformacaoDaFatura {
     }[]
 }
 ```
+
+# Resumo
+### Duas telas no frontend, uma com o formulário, outra com a listagem das simulações registradas (filtros, etc).
+### No backend, 3 endpoints: registrar uma nova simulação, consumir em lista, consumir por id.
+
+#
+Lembrando que o diferencial na avaliação será feito a partir das decisões de arquitetura, a separação das camadas de aplicação e domínio, etc.
