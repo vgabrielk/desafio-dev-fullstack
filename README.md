@@ -36,6 +36,9 @@ Uma vez submetido o formulário, o backend tem que ser capaz de criar um novo ``
 - [ ] Página de consulta ```/listagem```
 
 ### Backend
+- [ ] Endpoint para registrar uma nova simulação
+- [ ] Endpoint para listar todas as simulações (com opção de filtro por nome, email, codigo da unidade consumidora etc)
+- [ ] Endpoint para listar uma simulação baseado no id do lead, etc...
 - [ ] Modelar domínio com os agregados a seguir:
 ##### A fim de facilitar, vamos reduzir a complexidade dos agregados apenas pra informações pertinentes
 ```ts
@@ -61,9 +64,6 @@ export abstract class Consumo {
 }
 
 ```
-- [ ] API RESTful - endpoint para registrar uma nova simulação
-- [ ] API RESTful - endpoint para listar todas as simulações (com opção de filtro por nome, email, codigo da unidade consumidora etc)
-- [ ] API RESTful - endpoint para listar uma simulação baseado no id do lead, etc...
 # Regras
 * O email deverá ser único por `lead`
 * O codigoDaUnidadeConsumidora deve ser único.
