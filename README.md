@@ -34,6 +34,18 @@ O processo é simples, João submete um formulário contendo o seu nome, email e
 ###
 Uma vez submetido o formulário, o backend tem que ser capaz de criar um novo ```lead``` contendo as informações cadastrais do author, juntamente aos dados decodificados da conta de energia.
 
+>[!NOTE]
+>Endpoint utilizado para decodificação da conta de energia. <br/>
+>Sem autenticação, apenas realizar um POST com `multipart/form-data`<br/> o body deve ter o campo `"file"` contendo a conta de energia <br/>
+>POST https://magic-pdf.solarium.newsun.energy/v1/magic-pdf <br/><br/>
+>Content-Type: multipart/form-data <br />
+![image](https://github.com/newsunenergy/desafio-dev-fullstack-12-2023/assets/30875229/c2d784b6-d4f3-4009-b9c1-cbea7feac17d)
+
+
+
+>[!CAUTION]
+> Não há necessidade de salvar o arquivo da conta de energia. Não será utilizado como critério de avaliação
+
 ### Frontend
 - [ ] Página para submissão do formulário ```/simular```
 - [ ] Página de consulta ```/listagem```
