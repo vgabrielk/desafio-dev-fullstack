@@ -108,7 +108,6 @@ export interface SolicitarSimulacaoDeCompensacaoEnergeticaInput {
   nomeCompleto: string
   email: string
   telefone: string
-  faturasDeEnergia: (Buffer | File)[]
   informacoesDaFatura: InformacaoDaFatura[]
 }
 
