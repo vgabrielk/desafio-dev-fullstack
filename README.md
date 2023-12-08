@@ -24,16 +24,15 @@ Desejável:
 * Noções de Domain Driven Design (DDD).
 
 
-## O desafio:
-# Link para contas de energia [aqui](https://github.com/newsunenergy/desafio-dev-fullstack-12-2023/tree/main/contas-de-energia)
-> [!TIP]
-> A escolha de tecnologia é livre. O único requisito é que seja feito em Typescript e que o frontend seja feito em ReactJS ou NextJS. Pode adicionar frameworks ou bibliotecas da sua escolha!
-
-Utilizando o seu smartphone ou desktop, João deve ser capaz de realizar uma simulação para um plano de compensação energética. 
-###
-O processo é simples, João submete um formulário contendo o seu nome, email e telefone, junto a **uma ou mais** contas de energia (que será decodificada por nossa API interna).
-###
+# O Desafio:
+Utilizando o seu smartphone ou desktop, João deve ser capaz de realizar uma simulação para um plano de compensação energética. <br/>
+O processo é simples, João submete um formulário contendo o seu nome, email e telefone, junto a **uma ou mais** contas de energia (que será decodificada por nossa API interna).<br/><br/>
 Uma vez submetido o formulário, o backend tem que ser capaz de criar um novo ```lead``` contendo as informações cadastrais do author, juntamente aos dados decodificados da conta de energia.
+#
+# Link para contas de energia [aqui](https://github.com/newsunenergy/desafio-dev-fullstack-12-2023/tree/main/contas-de-energia)
+
+> [!TIP]
+> A escolha de tecnologia é livre. O único requisito é que seja feito em Typescript e que o frontend seja feito em ReactJS ou NextJS. Pode adicionar frameworks ou bibliotecas da sua escolha!<br/>
 
 >[!NOTE]
 >Endpoint utilizado para decodificação da conta de energia. <br/>
@@ -41,7 +40,6 @@ Uma vez submetido o formulário, o backend tem que ser capaz de criar um novo ``
 >POST https://magic-pdf.solarium.newsun.energy/v1/magic-pdf <br/><br/>
 >Content-Type: multipart/form-data <br />
 ![image](https://github.com/newsunenergy/desafio-dev-fullstack-12-2023/assets/30875229/c2d784b6-d4f3-4009-b9c1-cbea7feac17d)
-
 
 
 >[!CAUTION]
@@ -62,6 +60,8 @@ Uma vez submetido o formulário, o backend tem que ser capaz de criar um novo ``
 ### Diferencial
 - [ ] Fazer validação dos dados transitados na API.
 - [ ] Configurar ambiente docker para rodar a aplicação.
+
+
       
 ```ts
 export abstract class Lead {
@@ -86,6 +86,17 @@ export abstract class Consumo {
 }
 
 ```
+>[!NOTE]
+> DICA<br/>
+> ![image](https://github.com/newsunenergy/desafio-dev-fullstack-12-2023/assets/30875229/1601b2e4-f1b9-4b40-a2ae-020e342c7796)<br/>
+> `unit_key` representa `codigoDaUnidadeConsumidora` no nosso domínio<br/>
+> `chargingModel` representa `unit.enquadramento` no nosso domínio<br/>
+> `phaseModel` representa  `unit.modeloFasico` no nosso domínio<br/>
+> `consumo_fp` representa `unit.historicoDeConsumoEmKWH.consumoForaPontaEmKWH`<br/>
+> `consumo_date` representa `mesDoConsumo` <br/><br/>
+
+#
+
 # Regras
 * O email deverá ser único por `lead`
 * O codigoDaUnidadeConsumidora deve ser único.
