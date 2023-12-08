@@ -130,4 +130,13 @@ export interface InformacaoDaFatura {
 ### No backend, 3 endpoints: registrar uma nova simulação, consumir em lista, consumir por id.
 
 #
-Lembrando que o diferencial na avaliação será feito a partir das decisões de arquitetura, a separação das camadas de aplicação e domínio, etc.
+
+# Comece
+O processo do desafio deve ser: <br />
+
++ Faça o fork do desafio.
++ Crie um PROJECT.md com a explicação de como devemos executar o projeto e com o máximo de detalhes possível do que foi feito.
++ Após concluir faça um pull request
+
+Qualquer dúvida entre em contato por email.
+paulo.santana@newsun.energy
