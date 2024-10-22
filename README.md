@@ -19,10 +19,7 @@ Conhecimentos sólidos em:
 Desejável:
 * NestJS
 * Docker
-* Noções de Clean Architeture
-* Noções de SOLID.
-* Noções de Domain Driven Design (DDD).
-
+* Noções de Clean Architeture 
 
 # O Desafio:
 Utilizando o seu smartphone ou desktop, João deve ser capaz de realizar uma simulação para um plano de compensação energética. <br/>
@@ -64,7 +61,7 @@ Uma vez submetido o formulário, o backend tem que ser capaz de criar um novo ``
 
       
 ```ts
-export abstract class Lead {
+export interface Lead {
   id: string
   nomeCompleto: string
   email: string 
@@ -72,7 +69,7 @@ export abstract class Lead {
   unidades: Unidade[]
 }
 
-export abstract class Unidade {
+export interface Unidade {
   id: string
   codigoDaUnidadeConsumidora: string
   modeloFasico: 'monofasico' | 'bifasico' | 'trifasico'
@@ -80,7 +77,7 @@ export abstract class Unidade {
   historicoDeConsumoEmKWH: Consumo[]
 }
 
-export abstract class Consumo {
+export interface Consumo {
   consumoForaPontaEmKWH: number
   mesDoConsumo: Date
 }
