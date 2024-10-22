@@ -21,6 +21,11 @@ Desejável:
 * Docker
 * Noções de Clean Architeture 
 
+# Resumo
+### Duas telas no frontend, uma com o formulário, outra com a listagem das simulações registradas (filtros, etc).
+### No backend, 3 endpoints: registrar uma nova simulação, consumir em lista, consumir por id.
+
+
 # O Desafio:
 Utilizando o seu smartphone ou desktop, João deve ser capaz de realizar uma simulação para um plano de compensação energética. <br/>
 O processo é simples, João submete um formulário contendo o seu nome, email e telefone, junto a **uma ou mais** contas de energia (que será decodificada por nossa API interna).<br/><br/>
