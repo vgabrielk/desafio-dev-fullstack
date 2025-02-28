@@ -6,4 +6,5 @@ export interface Lead {
     email: string // Único
     telefone: string
     unidades: Unidade[]
+    createdAt: Date
   }

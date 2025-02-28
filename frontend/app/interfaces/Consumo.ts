@@ -1,4 +1,5 @@
 export interface Consumo {
     consumoForaPontaEmKWH: number
-    mesDoConsumo: Date
+    mesDoConsumo: string
+    id: string
   }
