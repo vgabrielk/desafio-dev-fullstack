@@ -3,6 +3,15 @@
 
 
 
+## Stack
+
+**Front:** Next.js, TailwindCSS, ShadCN
+
+**Server:** NestJS
+
+**DB:** MySQL, Prisma ORM
+
+
 ## Demo
 
 ![Descrição da imagem](https://cdn.discordapp.com/attachments/1211513058908700694/1345045114904379465/image.png?ex=67c31e61&is=67c1cce1&hm=b828048fb83dacda1999b2146c53b4f9f41c1997465a97c5fbceeefc95d39e48&)
