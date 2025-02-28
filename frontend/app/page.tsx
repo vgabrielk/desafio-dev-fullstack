@@ -1,6 +1,7 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -9,78 +10,77 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
-import { Wallet, Users, CreditCard } from "lucide-react";
 
-const data = [
-  { name: "Jan", value: 400 },
-  { name: "Fev", value: 800 },
-  { name: "Mar", value: 600 },
-  { name: "Abr", value: 900 },
-  { name: "Mai", value: 1200 },
-];
+import { ChartNoAxesColumnIncreasing, CirclePlus } from "lucide-react";
+import api from "./api/api";
+import { Lead } from "./interfaces/Lead";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [simulations, setSimulations] = useState(0);
+
+  useEffect(() => {
+    const fetchLeads = async () => {
+      try {
+        const response = await api.get('leads');
+        console.log(response)
+        setLeads(response.data);
+
+        setSimulations(response.data.length);  
+      } catch (error) {
+        console.error('Error fetching leads:', error);
+      }
+    };
+
+    fetchLeads();
+  }, []);
+
+  const redirectLista = () => window.location.href = '/listagem'
+  const redirectCriar = () => window.location.href = '/simular'
+
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0">
-            <CardTitle>Total Vendas</CardTitle>
-            <Wallet className="w-6 h-6 text-blue-500" />
+            <CardTitle>Total de simulações</CardTitle>
+            <ChartNoAxesColumnIncreasing className="w-6 h-6 text-green-500" />
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">R$ 45.000</p>
+            <p className="text-2xl font-bold">{simulations}</p>
+          </CardContent>
+          <CardContent className="space-y-2">
+          <CardDescription>
+            Clique no botão abaixo para visualizar suas simulações de compensação energética.  <br/>
+         Você poderá exportar um arquivo em PDF contendo informações de suas conta decodificada, filtrar por nome, telefone, email, etc;
+            </CardDescription>
+            <Button className="bg-green-500" onClick={redirectLista}>Ver simulações</Button>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0">
-            <CardTitle>Clientes</CardTitle>
-            <Users className="w-6 h-6 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">1.200</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0">
-            <CardTitle>Pagamentos</CardTitle>
-            <CreditCard className="w-6 h-6 text-purple-500" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">R$ 12.000</p>
-          </CardContent>
-        </Card>
       </div>
+      <div className="grid gap-6">
+        <Card>
+          <CardHeader className="flex  flex-row items-center justify-between">
+            <CardTitle>Nova simulação</CardTitle>
+          
+            <CirclePlus className="w-6 h-6 text-blue-500" />
+          </CardHeader>
+          <CardContent className="space-y-2">
+          <CardDescription>
+            Clique no botão abaixo para criar uma nova simulação de compensação energética.  <br/>
+          Insira os dados do seu nome, e-mail, telefone e informações da conta de energia para 
+          calcular o seu plano de compensação.
+            </CardDescription>
+            <Button className="bg-blue-500" onClick={redirectCriar}>Criar nova simulação</Button>
+          </CardContent>
+        </Card>
 
+      </div>
       <Card>
         <CardHeader>
-          <CardTitle>Vendas nos últimos meses</CardTitle>
-        </CardHeader>
-        <CardContent className="h-72">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data}>
-              <XAxis dataKey="name" stroke="#888888" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="value" fill="#3b82f6" />
-            </BarChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Últimas Transações</CardTitle>
+          <CardTitle>Últimas Simulações</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -88,25 +88,21 @@ export default function Home() {
               <TableRow>
                 <TableHead>Nome</TableHead>
                 <TableHead>Data</TableHead>
-                <TableHead>Valor</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Telefone</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell>João Silva</TableCell>
-                <TableCell>20/02/2025</TableCell>
-                <TableCell>R$ 1.200</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Maria Souza</TableCell>
-                <TableCell>18/02/2025</TableCell>
-                <TableCell>R$ 850</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Lucas Lima</TableCell>
-                <TableCell>15/02/2025</TableCell>
-                <TableCell>R$ 2.000</TableCell>
-              </TableRow>
+              {leads.map((lead : Lead) => (
+                <TableRow key={lead.id}>
+                  <TableCell>{lead.nomeCompleto}</TableCell>
+                  <TableCell>{new Date(lead.createdAt).toLocaleDateString()}</TableCell>
+                  <TableCell>{lead.email}</TableCell>  
+                  <TableCell>
+                 {lead.telefone}
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </CardContent>
