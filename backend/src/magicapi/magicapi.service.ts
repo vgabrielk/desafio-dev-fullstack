@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import * as FormData from 'form-data';
 import File from 'src/interfaces/File';
@@ -11,7 +11,10 @@ export class MagicapiService {
 
   async decodificarContaDeEnergia(file: File): Promise<FaturaDecodificada> {
     if (!file.mimetype || !file.buffer) {
-      throw new Error('Invalid file data');
+      throw new HttpException(
+        { message: 'Arquivo inválido', field: 'file' },
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const formData = new FormData();
@@ -35,8 +38,17 @@ export class MagicapiService {
       return axiosResponse.data;
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(
-          `Failha ao decodificar conta: ${error.message || error}`,
+        console.error('Erro ao decodificar a fatura:', error?.message || error);
+      }
+
+      if (error instanceof HttpException) {
+        throw new HttpException(
+          {
+            message: 'Falha ao decodificar a conta de energia.',
+            details: error || error.message,
+            field: 'file',
+          },
+          HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
     }

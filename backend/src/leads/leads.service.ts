@@ -11,69 +11,90 @@ export class LeadsService {
     private readonly magicapi: MagicapiService,
   ) {}
   async simular(createLeadDto: CreateLeadDto, file: Express.Multer.File) {
-    const informacoesDaFatura =
-      await this.magicapi.decodificarContaDeEnergia(file);
+    try {
+      const informacoesDaFatura =
+        await this.magicapi.decodificarContaDeEnergia(file);
 
-    console.log('leads', createLeadDto);
+      console.log('leads', createLeadDto);
 
-    if (!informacoesDaFatura || !informacoesDaFatura.invoice) {
-      throw new HttpException(
-        'Dados da fatura inválidos ou ausentes',
-        HttpStatus.CONFLICT,
-      );
-    }
+      if (!informacoesDaFatura || !informacoesDaFatura.invoice) {
+        throw new HttpException(
+          { message: 'Dados da fatura inválidos ou ausentes', field: 'file' },
+          HttpStatus.CONFLICT,
+        );
+      }
 
-    const existingEmail = await this.prisma.lead.findFirst({
-      where: {
-        email: createLeadDto.email,
-      },
-    });
-    const existingUnidade = await this.prisma.unidade.findFirst({
-      where: {
-        codigoDaUnidadeConsumidora: informacoesDaFatura.unit_key,
-      },
-    });
+      const existingEmail = await this.prisma.lead.findFirst({
+        where: { email: createLeadDto.email },
+      });
+      const existingUnidade = await this.prisma.unidade.findFirst({
+        where: { codigoDaUnidadeConsumidora: informacoesDaFatura.unit_key },
+      });
 
-    if (existingEmail) {
-      throw new HttpException(
-        'Simulação com o mesmo email já existe.',
-        HttpStatus.CONFLICT,
-      );
-    }
-    if (existingUnidade) {
-      throw new HttpException(
-        'Unidade com o mesmo código já existe.',
-        HttpStatus.CONFLICT,
-      );
-    }
-    const lead = await this.prisma.lead.create({
-      data: {
-        nomeCompleto: createLeadDto.nome,
-        email: createLeadDto.email,
-        telefone: createLeadDto.telefone,
-        unidades: {
-          create: [
-            {
-              codigoDaUnidadeConsumidora: informacoesDaFatura.unit_key,
-              modeloFasico: informacoesDaFatura.phaseModel,
-              enquadramento: informacoesDaFatura.chargingModel,
-              historicoDeConsumoEmKWH: {
-                create: informacoesDaFatura.invoice?.map(
-                  (consumo: {
-                    consumo_fp: any;
-                    consumo_date: string | number | Date;
-                  }) => ({
-                    consumoForaPontaEmKWH: Number(consumo.consumo_fp),
-                    mesDoConsumo: new Date(consumo.consumo_date),
-                  }),
-                ),
+      if (existingEmail) {
+        throw new HttpException(
+          { message: 'Simulação com o mesmo email já existe.', field: 'email' },
+          HttpStatus.CONFLICT,
+        );
+      }
+      if (existingUnidade) {
+        throw new HttpException(
+          {
+            message: 'Unidade com o mesmo código já existe.',
+            field: 'codigoDaUnidadeConsumidora',
+          },
+          HttpStatus.CONFLICT,
+        );
+      }
+
+      if (!informacoesDaFatura.unit_key) {
+        throw new HttpException(
+          {
+            message: 'Cada lead deve ter pelo menos uma unidade associada.',
+            field: 'unidade',
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const lead = await this.prisma.lead.create({
+        data: {
+          nomeCompleto: createLeadDto.nome,
+          email: createLeadDto.email,
+          telefone: createLeadDto.telefone,
+          unidades: {
+            create: [
+              {
+                codigoDaUnidadeConsumidora: informacoesDaFatura.unit_key,
+                modeloFasico: informacoesDaFatura.phaseModel,
+                enquadramento: informacoesDaFatura.chargingModel,
+                historicoDeConsumoEmKWH: {
+                  create: informacoesDaFatura.invoice?.map(
+                    (consumo: { consumo_fp: any; consumo_date: string }) => ({
+                      consumoForaPontaEmKWH: Number(consumo.consumo_fp),
+                      mesDoConsumo: new Date(consumo.consumo_date),
+                    }),
+                  ),
+                },
               },
-            },
-          ],
+            ],
+          },
         },
-      },
-    });
-    return lead;
+      });
+
+      return lead;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Erro na simulação:', error?.message || error);
+      }
+
+      if (error instanceof HttpException) {
+        throw new HttpException(
+          { message: 'Erro interno no servidor', details: error.message },
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+    }
   }
 
   findAll(filters: {

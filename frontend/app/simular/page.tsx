@@ -61,7 +61,8 @@ export default function Simular() {
       });
       toast.success('Simulação enviada com sucesso!')
     } catch (error) {
-      if (error instanceof Error)      toast.error(error.message)
+      console.log(error)
+      if (error instanceof Error)      toast.error(error?.response?.data?.error?.details)
     }
   };
 
