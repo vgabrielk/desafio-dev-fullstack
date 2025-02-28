@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings, Zap } from "lucide-react";
+import { Home, Inbox, Zap } from "lucide-react";
 
 import {
   Sidebar,

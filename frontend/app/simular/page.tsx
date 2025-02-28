@@ -8,6 +8,7 @@ import { useState } from "react";
 
 import api from "../api/api";
 import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 export default function Simular() {
   const [form, setForm] = useState({
@@ -62,7 +63,7 @@ export default function Simular() {
       toast.success('Simulação enviada com sucesso!')
     } catch (error) {
       console.log(error)
-      if (error instanceof Error)      toast.error(error?.response?.data?.error?.details)
+      if (error instanceof AxiosError)      toast.error(error?.response?.data?.error?.details)
     }
   };
 
